@@ -14,16 +14,14 @@ async fn main() {
         .await;
 }
 
-#[cfg(test)]
-mod tests {
+#[tokio::test]
+async fn test_dir_matches() {
+    let filter = warp::fs::dir("out");
 
-    use http::{Request};
-
-    #[test]
-    fn frontend_http_get() {
-        let request = Request::builder()
-            .method("GET")
-            .uri("http://localhost:3030/")
-            .unwrap();
-    }
+    assert!(
+        warp::test::request()
+            .path("/")
+            .matches(&filter)
+            .await
+        );
 }
